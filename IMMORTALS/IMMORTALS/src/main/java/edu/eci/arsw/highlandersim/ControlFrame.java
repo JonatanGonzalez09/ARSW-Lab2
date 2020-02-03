@@ -24,6 +24,10 @@ import javax.swing.JScrollBar;
 
 public class ControlFrame extends JFrame {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     private static final int DEFAULT_IMMORTAL_HEALTH = 100;
     private static final int DEFAULT_DAMAGE_VALUE = 10;
 
@@ -92,14 +96,14 @@ public class ControlFrame extends JFrame {
 				 * COMPLETAR
                  */
                 int sum = 0;
-                for (Immortal im : immortals) {
-                    sum += im.getHealth();
+                synchronized(immortals){
+                    for (Immortal im : immortals) {
+                        im.pausar();
+                        sum += im.getHealth().get();
+                    }
+                    immortals.notifyAll();
                 }
-
                 statisticsLabel.setText("<html>"+immortals.toString()+"<br>Health sum:"+ sum);
-                
-                
-
             }
         });
         toolBar.add(btnPauseAndCheck);
@@ -111,6 +115,9 @@ public class ControlFrame extends JFrame {
                 /**
                  * IMPLEMENTAR
                  */
+                for (Immortal i : immortals){
+                    i.reanudar();
+                }
 
             }
         });
