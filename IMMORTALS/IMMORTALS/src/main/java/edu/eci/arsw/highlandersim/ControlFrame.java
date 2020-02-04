@@ -78,6 +78,7 @@ public class ControlFrame extends JFrame {
 
                 if (immortals != null) {
                     for (Immortal im : immortals) {
+                    	
                         im.start();
                     }
                 }
@@ -135,6 +136,8 @@ public class ControlFrame extends JFrame {
         JButton btnStop = new JButton("STOP");
         btnStop.setForeground(Color.RED);
         toolBar.add(btnStop);
+        
+        
 
         scrollPane = new JScrollPane();
         contentPane.add(scrollPane, BorderLayout.CENTER);

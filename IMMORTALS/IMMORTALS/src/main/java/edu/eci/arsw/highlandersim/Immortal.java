@@ -81,8 +81,10 @@ public class Immortal extends Thread {
     }
 
     public void fight(Immortal i2) {
-    	synchronized(this){
-    		synchronized(i2){
+    	Immortal One = getId() > i2.getId() ? this : i2;
+    	Immortal Two = getId() > i2.getId() ? i2 : this;
+    	synchronized(One){
+    		synchronized(Two){
     	
 		        if (i2.getHealth().get() > 0) {
 		            i2.getHealth().addAndGet(-defaultDamageValue);
