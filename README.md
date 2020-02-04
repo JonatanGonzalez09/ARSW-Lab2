@@ -1,6 +1,6 @@
 # ARSW-Lab2 #
 
-**Realizado por: Jonatan Esteban Gonzalez Rodriguez y David Caycedo**
+**Realizado por: Jonatan Esteban Gonzalez Rodriguez y David Eduardo Caycedo **
 
 # Part I - Before finishing class #
 
@@ -114,7 +114,21 @@ _El valor de la suma debería ser_ **N(players)** _*_ **DEFAULT_IMMORTAL_HEALTH*
 
 7. After implementing your strategy, start running your program, and pay attention to whether it comes to a halt. If so, use the jps and jstack programs to identify why the program stopped.
 
+
+
+Utilizando la herramientas jps y jstack podemos evidenciar que utilizando la solucion sugerida en el enunciado de bloques sincronizados anidados se presento un Deadlock debido a que los inmortales necesitan acceder a recursos, pero en el momento estos estan bloqueados por otros inmortales, por lo que se detiene la ejecucion.
+```
+synchronized(locka){
+	synchronized(lockb){
+		…
+	}
+}
+```
+![](https://github.com/JonatanGonzalez09/ARSW-Lab2/blob/master/Resources/dead.PNG)
+
 8. Consider a strategy to correct the problem identified above (you can review Chapter 15 of Java Concurrency in Practice again).
+
+
 
 9. Once the problem is corrected, rectify that the program continues to function consistently when 100, 1000 or 10000 immortals are executed. If in these large cases the invariant begins to be breached again, you must analyze what was done in step 4.
 
