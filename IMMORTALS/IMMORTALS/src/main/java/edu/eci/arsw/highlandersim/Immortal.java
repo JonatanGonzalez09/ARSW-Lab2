@@ -2,6 +2,7 @@ package edu.eci.arsw.highlandersim;
 
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.*;
 
 public class Immortal extends Thread {
@@ -12,7 +13,7 @@ public class Immortal extends Thread {
     
     private int defaultDamageValue;
 
-    private final List<Immortal> immortalsPopulation;
+    private final CopyOnWriteArrayList<Immortal> immortalsPopulation;
 
     private final String name;
 
@@ -21,7 +22,7 @@ public class Immortal extends Thread {
     private boolean pausar = false;
 
 
-    public Immortal(String name, List<Immortal> immortalsPopulation, int health, int defaultDamageValue,
+    public Immortal(String name, CopyOnWriteArrayList<Immortal> immortalsPopulation, int health, int defaultDamageValue,
             ImmortalUpdateReportCallback ucb) {
         super(name);
         this.updateCallback=ucb;
@@ -34,7 +35,7 @@ public class Immortal extends Thread {
 
     public void run() {
 
-        while (true) {
+        while (!ControlFrame.stop) {
             Immortal im;
             
             synchronized (immortalsPopulation) {	
@@ -88,20 +89,24 @@ public class Immortal extends Thread {
     }
 
     public void fight(Immortal i2) {
-   
-    	//synchronized(this){
-    		//synchronized(i2){
+    	Immortal One = getId() > i2.getId() ? this : i2;
+        Immortal Two = getId() > i2.getId() ? i2 : this;
+    	synchronized(One){
+    		synchronized(Two){
     	
 		        if (i2.getHealth().get() > 0) {
 		            i2.getHealth().addAndGet(-defaultDamageValue);
 		            this.health.addAndGet(defaultDamageValue);
 		            updateCallback.processReport("Fight: " + this + " vs " + i2+"\n");
 		        } else {
+		        	//immortalsPopulation.remove(i2);
 		            updateCallback.processReport(this + " says:" + i2 + " is already dead!\n");
 		        }
-    	//	}
-    	//}	
+    		}
+    	}	
     }
+    
+    
 
     public void changeHealth(int v) {
         health.getAndSet(v);
