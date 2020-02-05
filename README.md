@@ -128,12 +128,29 @@ synchronized(locka){
 
 8. Consider a strategy to correct the problem identified above (you can review Chapter 15 of Java Concurrency in Practice again).
 
-
-
 9. Once the problem is corrected, rectify that the program continues to function consistently when 100, 1000 or 10000 immortals are executed. If in these large cases the invariant begins to be breached again, you must analyze what was done in step 4.
+
+Se probó con los diferentes casos y el invariante se mantiene, icluso en casos de 10000 inmortales. 
 
 10. An annoying element for the simulation is that at a certain point in it there are few living 'immortals' making failed fights with 'immortals' already dead. It is necessary to suppress the immortal dead of the simulation as they die. 
  - Analyzing the simulation operation scheme, could this create a race condition? Implement the functionality, run the simulation and see what problem arises when there are many 'immortals' in it. Write your conclusions about it in the file ANSWERS.txt.
  - Correct the previous problem WITHOUT using synchronization, since making access to the shared list of immortals sequential would make simulation extremely slow. 
  
  11. To finish, implement the STOP option.
+ ```
+ JButton btnStop = new JButton("STOP");
+        btnStop.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                    stop = true;
+                    btnPauseAndCheck.setEnabled(false);
+                    btnResume.setEnabled(false);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
+                    System.err.println("Error stopping");
+                }
+                output.selectAll();
+                    output.replaceSelection("");
+            }
+        });
+```	
